@@ -2,6 +2,7 @@ import React from "react";
 import Puppy from "./Puppy";
 
 const Puppies = ({ pups, fetchPuppy }) => {
+  console.log({ pups });
   return (
     <div id="puppies">
       <section className="puppies">

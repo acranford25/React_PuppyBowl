@@ -5,7 +5,7 @@ import Puppies from "./Puppies";
 import Puppy from "./Puppy";
 
 function App() {
-  const [pups, setPups] = useState({});
+  const [pups, setPups] = useState([]);
   const [playerId, setPlayerId] = useState(2770);
   const [singlePup, setSinglePup] = useState({});
 
@@ -55,7 +55,17 @@ function App() {
 
   return (
     <div className="App">
-      <Puppies pups={pups} />
+      <header>
+        <form>
+          <input text="text" />
+          <button type="submit">
+            <i id="name">Name</i>
+          </button>
+        </form>
+      </header>
+      <body>
+        <Puppies pups={pups} />
+      </body>
     </div>
   );
 }
