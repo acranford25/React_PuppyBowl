@@ -1,0 +1,48 @@
+#root {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+main {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+#puppies {
+  width: 100%;
+}
+
+.puppies {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-grow: 1;
+}
+
+.puppy {
+  display: flex;
+  flex-basis: 20%;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-direction: column;
+  padding: 10px;
+  box-shadow: 0 2px 5px -2px black;
+}
+
+.image {
+  height: 250px;
+  width: 180px;
+}
+
+@media (min-width: 770px) {
+  .puppy {
+    flex-basis: 10%;
+  }
+
+  .puppies {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
