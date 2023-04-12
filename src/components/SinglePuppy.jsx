@@ -1,10 +1,8 @@
 import React from "react";
 
-const Puppy = ({ singlePup, fetchPuppy }) => {
+const SinglePuppy = ({ singlePup }) => {
   const handleClick = (event) => {
     event.preventDefault();
-    console.log(singlePup.id);
-    fetchPuppy(singlePup.id);
   };
 
   return (
@@ -15,13 +13,10 @@ const Puppy = ({ singlePup, fetchPuppy }) => {
       </h3>
       <img className="image" src={`${singlePup.imageUrl}`} />
       <form onClick={handleClick}>
-        <button type="onClick">See Details</button>
-      </form>
-      <form>
-        <button type="onClick">Delete</button>
+        <button type="onClick">Back</button>
       </form>
     </div>
   );
 };
 
-export default Puppy;
+export default SinglePuppy;

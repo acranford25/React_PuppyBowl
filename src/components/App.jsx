@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import Puppies from "./Puppies";
 import Puppy from "./Puppy";
+import Header from "./Header";
+import SinglePuppy from "./SinglePuppy";
 
 function App() {
   const [pups, setPups] = useState([]);
-  const [playerId, setPlayerId] = useState(2770);
+  const [playerId, setPlayerId] = useState();
   const [singlePup, setSinglePup] = useState({});
 
   const getPuppies = async () => {
@@ -22,50 +24,51 @@ function App() {
     }
   };
 
-  /* const selectSinglePup = async (playerId) => {
+  const fetchPuppy = async (playerId) => {
     try {
       const response = await fetch(
         `https://fsa-puppy-bowl.herokuapp.com/api/2301-ftb-et-web-am/players/${playerId}`
       );
-      const singlePup = await response.json();
-      console.log(singlePup);
-      setPlayerId(singlePup);
+      const result = await response.json();
+      setSinglePup(result.data.player);
+      setPlayerId(result.data.player.id);
     } catch (error) {
       console.log("error fetching single pup", error);
     }
-  };*/
+  };
 
   useEffect(() => {
     getPuppies();
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     async function fetchPuppy() {
       const response = await fetch(
         `https://fsa-puppy-bowl.herokuapp.com/api/2301-ftb-et-web-am/players/${playerId}`
       );
       const result = await response.json();
-      console.log(result.data.player);
-      setSinglePup(result.data.player);
+      setPlayerId(result.data.player);
     }
     fetchPuppy();
-
     return () => {};
-  }, [playerId]);
+  }, [playerId]);*/
 
   return (
     <div className="App">
       <header>
-        <form>
-          <input text="text" />
-          <button type="submit">
-            <i id="name">Name</i>
-          </button>
-        </form>
+        <Header />
       </header>
-      <body>
-        <Puppies pups={pups} />
-      </body>
+      <div>
+        {playerId ? (
+          <SinglePuppy
+            key={singlePup.id}
+            singlePup={singlePup}
+            fetchPuppy={fetchPuppy}
+          />
+        ) : (
+          <Puppies pups={pups} fetchPuppy={fetchPuppy} />
+        )}
+      </div>
     </div>
   );
 }
