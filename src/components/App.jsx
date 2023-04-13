@@ -2,9 +2,10 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import Puppies from "./Puppies";
-import Puppy from "./Puppy";
 import Header from "./Header";
 import SinglePuppy from "./SinglePuppy";
+
+const PUPPYURL = "https://fsa-puppy-bowl.herokuapp.com/api/2301-ftb-et-web-am/";
 
 function App() {
   const [pups, setPups] = useState([]);
@@ -13,9 +14,7 @@ function App() {
 
   const getPuppies = async () => {
     try {
-      const response = await fetch(
-        "https://fsa-puppy-bowl.herokuapp.com/api/2301-ftb-et-web-am/players"
-      );
+      const response = await fetch(`${PUPPYURL}players`);
       const result = await response.json();
       console.log(result.data.players);
       setPups(result.data.players);
@@ -24,11 +23,13 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    getPuppies();
+  }, []);
+
   const fetchPuppy = async (playerId) => {
     try {
-      const response = await fetch(
-        `https://fsa-puppy-bowl.herokuapp.com/api/2301-ftb-et-web-am/players/${playerId}`
-      );
+      const response = await fetch(`${PUPPYURL}players/${playerId}`);
       const result = await response.json();
       setSinglePup(result.data.player);
       setPlayerId(result.data.player.id);
@@ -37,34 +38,31 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    getPuppies();
-  }, []);
-
-  /*useEffect(() => {
-    async function fetchPuppy() {
-      const response = await fetch(
-        `https://fsa-puppy-bowl.herokuapp.com/api/2301-ftb-et-web-am/players/${playerId}`
-      );
+  const postPuppy = async (newPuppy) => {
+    try {
+      const response = await fetch(`${PUPPYURL}players`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newPuppy),
+      });
       const result = await response.json();
-      setPlayerId(result.data.player);
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log("trouble adding new player!", error);
     }
-    fetchPuppy();
-    return () => {};
-  }, [playerId]);*/
+  };
 
   return (
     <div className="App">
       <header>
-        <Header />
+        <Header postPuppy={postPuppy} />
       </header>
       <div>
         {playerId ? (
-          <SinglePuppy
-            key={singlePup.id}
-            singlePup={singlePup}
-            fetchPuppy={fetchPuppy}
-          />
+          <SinglePuppy key={singlePup.id} singlePup={singlePup} />
         ) : (
           <Puppies pups={pups} fetchPuppy={fetchPuppy} />
         )}
